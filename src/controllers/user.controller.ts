@@ -147,12 +147,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 			from: "Gomita <onboarding@resend.dev>",
 			to: [query.email],
 			subject: "Tú codigo para iniciar sesión",
-			html: `
-				<p>Hola <strong>${query.nickname}!</strong>, copia y pega el código de verificación para poder iniciar sesión.
-				<p style="font-size:14px;"><em>Recuerda que el código tiene una duración de 5 minutos.</em></p>
-				<p style="margin-top:40px;text-align:center;"><strong>Código OTP</strong></p>
-				<p style="text-align:center;font-size:40px;margin:0 !important;">${otpCode}</p>
-			`
+			html: `<p>Hola ${query.nickname}!, tu código para iniciar sesión es: ${otpCode}</p>`
 		});
 
 		if (error !== null) {
