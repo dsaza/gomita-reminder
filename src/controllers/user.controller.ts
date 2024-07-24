@@ -244,7 +244,7 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		const refreshToken = await sign({
 			id: query.id,
 			email: login.email,
-			exp: Math.floor(now / 1000) + (60 * 60 * 24 * 14) // 14 days
+			exp: Math.floor(now / 1000) + (60 * 60 * 24 * 30) // 30 days
 		}, c.env.JWT_REFRESH_SECRET);
 
 		return c.json<ApiResponse>({
