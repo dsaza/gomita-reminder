@@ -1,6 +1,10 @@
 import { Hono } from "hono";
 import { userRootPrivilege } from "../middlewares/user";
-import { listUsers, loginUser, preLoginUser, refreshToken, storeUser } from "../controllers/user.controller";
+import { storeUser } from "../controllers/user/store";
+import { listUsers } from "../controllers/user/list";
+import { preLoginUser } from "../controllers/user/pre-login";
+import { loginUser } from "../controllers/user/login";
+import { refreshToken } from "../controllers/user/refresh";
 
 const user = new Hono();
 
