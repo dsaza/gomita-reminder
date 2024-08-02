@@ -1,6 +1,10 @@
 import { Hono } from "hono";
-import { deleteTask, listTasks, showTask, storeTask, updateTask } from "../controllers/task.controller";
-import { authMiddleware } from "../middlewares/auth.middleware";
+import { authMiddleware } from "../middlewares/auth";
+import { storeTask } from "../controllers/task/store";
+import { listTasks } from "../controllers/task/list";
+import { showTask } from "../controllers/task/show";
+import { updateTask } from "../controllers/task/update";
+import { deleteTask } from "../controllers/task/delete";
 
 const task = new Hono();
 
