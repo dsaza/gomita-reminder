@@ -4,6 +4,7 @@ export type WorkerBindings = {
 	RESEND_KEY: string;
 	JWT_SECRET: string;
 	JWT_REFRESH_SECRET: string;
+	JWT_ACCOUNT_SECRET: string;
 }
 
 export type AuthVariables = {

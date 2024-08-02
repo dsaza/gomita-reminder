@@ -9,6 +9,7 @@ ROOT_KEY = "your-root-key"
 RESEND_KEY = "your-resend-api-key"
 JWT_SECRET = "your-jwt-secret"
 JWT_REFRESH_SECRET = "your-jwt-refresh"
+JWT_ACCOUNT_SECRET = "your-jwt-account"
 
 [[d1_databases]]
 binding = "DB"
