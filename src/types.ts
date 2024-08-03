@@ -19,3 +19,18 @@ export interface ApiResponse {
 	message: string;
 	data?: any;
 }
+
+export interface IUser {
+	id: string;
+	name: string;
+	lastname: string;
+	nickname: string;
+	pin: string;
+	birthdate: number;
+	phone: string;
+	email: string;
+	avatar: string | null;
+	telegramChatId: string;
+	otpCode: string | null;
+	otpExpiration: number | null;
+}

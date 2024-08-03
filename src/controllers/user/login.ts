@@ -1,8 +1,9 @@
 import { Context } from "hono";
 import { sign } from "hono/jwt";
 import { z } from "zod";
-import { ApiResponse, WorkerBindings } from "@/types";
+import { ApiResponse, IUser, WorkerBindings } from "@/types";
 import { parseBody } from "@lib/request";
+import { getUserLoginData } from "@/lib/user";
 
 export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 	try {
@@ -24,9 +25,9 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		const login = loginSchema.parse(body);
 
 		const query = await c.env.DB
-			.prepare("SELECT id, name, lastname, nickname, birthdate, phone, email, avatar, otpExpiration FROM Users WHERE id = ? AND email = ? AND otpCode = ?")
+			.prepare("SELECT * FROM Users WHERE id = ? AND email = ? AND otpCode = ?")
 			.bind(login.id, login.email, login.otpCode)
-			.first<{ id: string, name: string, lastname: string, nickname: string, birthdate: number, phone: string, email: string, avatar: string | null, otpExpiration: number }>()
+			.first<IUser>()
 
 		if (query === null) {
 			return c.json<ApiResponse>({
@@ -38,52 +39,20 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		const now = Date.now();
 		const otpExpiration = query.otpExpiration;
 
-		if (now > otpExpiration) {
+		if (otpExpiration !== null && now > otpExpiration) {
 			return c.json<ApiResponse>({
 				status: "INVALID_CREDENTIALS",
 				message: "Invalid credentials"
 			}, 400);
 		}
 
-		const token = await sign({
-			id: query.id,
-			email: login.email,
-			exp: Math.floor(now / 1000) + (60 * 45) // 45 minutes
-		}, c.env.JWT_SECRET);
-
-		const refreshToken = await sign({
-			id: query.id,
-			email: login.email,
-			exp: Math.floor(now / 1000) + (60 * 60 * 24 * 30) // 30 days
-		}, c.env.JWT_REFRESH_SECRET);
-
-		const accountToken = await sign({
-			id: query.id,
-			email: login.email,
-			exp: Math.floor(now / 1000) + (60 * 60 * 24 * 184) // 6 months
-		}, c.env.JWT_ACCOUNT_SECRET);
-
-		return c.json<ApiResponse>({
-			status: "OK",
-			message: "User logged in successfully",
-			data: {
-				user: {
-					id: query.id,
-					name: query.name,
-					lastname: query.lastname,
-					nickname: query.nickname,
-					birthdate: query.birthdate,
-					phone: query.phone,
-					email: query.email,
-					avatar: query.avatar
-				},
-				token: {
-					value: token,
-					refresh: refreshToken,
-					account: accountToken
-				}
-			}
+		const userData = await getUserLoginData(c.env, {
+			user: query,
+			type: "login",
+			now: now
 		});
+
+		return c.json(userData);
 	} catch (error: any) {
 		if (error instanceof z.ZodError) {
 			const firstError = error.errors[0];

@@ -4,9 +4,10 @@ import { JWTPayload } from "hono/utils/jwt/types";
 import { z } from "zod";
 import { compare } from "bcryptjs";
 import { Resend } from "resend";
-import { ApiResponse, WorkerBindings } from "@/types";
+import { ApiResponse, IUser, WorkerBindings } from "@/types";
 import { parseBody } from "@lib/request";
 import { generateOTP } from "@utils/otp";
+import { getUserLoginData } from "@/lib/user";
 
 export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 	try {
@@ -28,9 +29,9 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		const user = userSchema.parse(body);
 
 		const query = await c.env.DB
-			.prepare("SELECT id, pin, name, lastname, nickname, birthdate, phone, email, avatar FROM Users WHERE phone = ?")
+			.prepare("SELECT * FROM Users WHERE phone = ?")
 			.bind(user.phone)
-			.first<{ id: string, pin: string, name: string, lastname: string, nickname: string, birthdate: number, phone: string, email: string, avatar: string | null }>()
+			.first<IUser>()
 
 		if (query === null) {
 			return c.json<ApiResponse>({
@@ -60,40 +61,12 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 			}
 
 			if (jwtPayload !== null) {
-				const now = Date.now();
-
-				const token = await sign({
-					id: query.id,
-					email: query.email,
-					exp: Math.floor(now / 1000) + (60 * 45) // 45 minutes
-				}, c.env.JWT_SECRET);
-
-				const refreshToken = await sign({
-					id: query.id,
-					email: query.email,
-					exp: Math.floor(now / 1000) + (60 * 60 * 24 * 30) // 30 days
-				}, c.env.JWT_REFRESH_SECRET);
-
-				return c.json<ApiResponse>({
-					status: "VALID_ACCOUNT",
-					message: "User logged in successfully",
-					data: {
-						user: {
-							id: query.id,
-							name: query.name,
-							lastname: query.lastname,
-							nickname: query.nickname,
-							birthdate: query.birthdate,
-							phone: query.phone,
-							email: query.email,
-							avatar: query.avatar
-						},
-						token: {
-							value: token,
-							refresh: refreshToken
-						}
-					}
+				const userData = await getUserLoginData(c.env, {
+					user: query,
+					type: "pre-login"
 				});
+
+				return c.json(userData);
 			}
 		}
 
@@ -122,7 +95,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 			.run();
 
 		return c.json<ApiResponse>({
-			status: "EMAIL_SENT",
+			status: "OK_SENT",
 			message: "User OTP sent successfully",
 			data: {
 				id: query.id,
