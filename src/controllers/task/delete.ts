@@ -1,5 +1,5 @@
 import { Context } from "hono";
-import { ApiResponse, WorkerBindings, AuthVariables } from "../../types";
+import { ApiResponse, WorkerBindings, AuthVariables } from "@/types";
 
 export async function deleteTask (c: Context<{ Bindings: WorkerBindings, Variables: AuthVariables }>) {
 	try {

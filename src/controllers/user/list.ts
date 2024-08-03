@@ -1,5 +1,5 @@
 import { Context } from "hono";
-import { ApiResponse, WorkerBindings } from "../../types";
+import { ApiResponse, WorkerBindings } from "@/types";
 
 export async function listUsers (c: Context<{ Bindings: WorkerBindings }>) {
 	try {

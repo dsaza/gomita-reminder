@@ -1,7 +1,7 @@
 import { Context, Next } from "hono";
 import { verify } from "hono/jwt";
-import { ApiResponse, WorkerBindings, AuthVariables } from "../types";
-import { isJwtError } from "../utils/jwt";
+import { ApiResponse, WorkerBindings, AuthVariables } from "@/types";
+import { isJwtError } from "@utils/jwt";
 
 export async function authMiddleware (c: Context<{ Bindings: WorkerBindings, Variables: AuthVariables }>, next: Next) {
 	try {

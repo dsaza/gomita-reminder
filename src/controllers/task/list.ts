@@ -1,6 +1,6 @@
 import { Context } from "hono";
-import { TASK_STATUS } from "../../constants";
-import { ApiResponse, AuthVariables, WorkerBindings } from "../../types";
+import { TASK_STATUS } from "@/constants";
+import { ApiResponse, AuthVariables, WorkerBindings } from "@/types";
 
 export async function listTasks (c: Context<{ Bindings: WorkerBindings, Variables: AuthVariables }>) {
 	try {

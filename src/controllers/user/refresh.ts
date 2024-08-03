@@ -1,9 +1,9 @@
 import { Context } from "hono";
 import { sign, verify } from "hono/jwt";
 import { z } from "zod";
-import { ApiResponse, WorkerBindings } from "../../types";
-import { parseBody } from "../../utils/request";
-import { isJwtError } from "../../utils/jwt";
+import { ApiResponse, WorkerBindings } from "@/types";
+import { parseBody } from "@utils/request";
+import { isJwtError } from "@utils/jwt";
 
 export async function refreshToken (c: Context<{ Bindings: WorkerBindings }>) {
 	try {

@@ -1,6 +1,6 @@
 import { Context, Next } from "hono";
-import { WorkerBindings } from "../types";
-import { ApiResponse } from "../types";
+import { WorkerBindings } from "@/types";
+import { ApiResponse } from "@/types";
 
 export async function userRootPrivilege (c: Context<{ Bindings: WorkerBindings }>, next: Next) {
 	try {

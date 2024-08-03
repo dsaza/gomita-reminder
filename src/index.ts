@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { ApiResponse } from "./types";
-import { userRoute } from "./routes/user.route";
-import { taskRoute } from "./routes/task.route";
+import { ApiResponse } from "@/types";
+import { userRoute } from "@routes/user.route";
+import { taskRoute } from "@routes/task.route";
 
 const app = new Hono();
 

@@ -4,9 +4,9 @@ import { JWTPayload } from "hono/utils/jwt/types";
 import { z } from "zod";
 import { compare } from "bcryptjs";
 import { Resend } from "resend";
-import { ApiResponse, WorkerBindings } from "../../types";
-import { parseBody } from "../../utils/request";
-import { generateOTP } from "../../utils/otp";
+import { ApiResponse, WorkerBindings } from "@/types";
+import { parseBody } from "@utils/request";
+import { generateOTP } from "@utils/otp";
 
 export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 	try {

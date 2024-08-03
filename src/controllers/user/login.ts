@@ -1,8 +1,8 @@
 import { Context } from "hono";
 import { sign } from "hono/jwt";
 import { z } from "zod";
-import { ApiResponse, WorkerBindings } from "../../types";
-import { parseBody } from "../../utils/request";
+import { ApiResponse, WorkerBindings } from "@/types";
+import { parseBody } from "@utils/request";
 
 export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 	try {
