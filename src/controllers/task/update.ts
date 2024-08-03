@@ -24,14 +24,14 @@ export async function updateTask (c: Context<{ Bindings: WorkerBindings, Variabl
 			date: z.string().trim().length(19).regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/)
 		});
 
-		const task = taskSchema.parse(body);
+		const taskBody = taskSchema.parse(body);
 		const now = Date.now();
 
-		const query = await c.env.DB
+		const queryUpdate = await c.env.DB
 			.prepare("UPDATE Tasks SET title = ?, content = ?, date = ?, updatedAt = ? WHERE id = ? AND userId = ?")
-			.bind(task.title, task.content, dateToTimestamp(task.date), now, taskId, user.id).run();
+			.bind(taskBody.title, taskBody.content, dateToTimestamp(taskBody.date), now, taskId, user.id).run();
 
-		if (query.meta.changes === 0) {
+		if (queryUpdate.meta.changes === 0) {
 			return c.json<ApiResponse>({
 				status: "NOT_FOUND",
 				message: "Task not found"

@@ -9,7 +9,6 @@ import { TASK_STATUS } from "@/constants";
 export async function storeTask (c: Context<{ Bindings: WorkerBindings, Variables: AuthVariables }>) {
 	try {
 		const user = c.get("user");
-
 		const body = await parseBody(c);
 
 		if (body === null) {
@@ -25,14 +24,13 @@ export async function storeTask (c: Context<{ Bindings: WorkerBindings, Variable
 			date: z.string().trim().length(19).regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/)
 		});
 
-		const task = taskSchema.parse(body);
+		const taskBody = taskSchema.parse(body);
 		const now = Date.now();
-
 		const taskId = uuid();
 
 		await c.env.DB
 			.prepare("INSERT INTO Tasks (id, title, content, date, status, userId, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-			.bind(taskId, task.title, task.content, dateToTimestamp(task.date), TASK_STATUS.PENDING, user.id, now, now)
+			.bind(taskId, taskBody.title, taskBody.content, dateToTimestamp(taskBody.date), TASK_STATUS.PENDING, user.id, now, now)
 			.run();
 
 		return c.json<ApiResponse>({

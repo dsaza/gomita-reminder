@@ -6,12 +6,12 @@ export async function deleteTask (c: Context<{ Bindings: WorkerBindings, Variabl
 		const user = c.get("user");
 		const taskId = c.req.param("id");
 
-		const query = await c.env.DB
+		const queryDelete = await c.env.DB
 			.prepare("DELETE FROM Tasks WHERE id = ? AND userId = ?")
 			.bind(taskId, user.id)
 			.run();
 
-		if (query.meta.changes === 0) {
+		if (queryDelete.meta.changes === 0) {
 			return c.json<ApiResponse>({
 				status: "NOT_FOUND",
 				message: "Task not found"

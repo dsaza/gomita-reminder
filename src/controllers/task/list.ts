@@ -6,14 +6,14 @@ export async function listTasks (c: Context<{ Bindings: WorkerBindings, Variable
 	try {
 		const user = c.get("user");
 
-		const pageStr = c.req.query("page") ?? "1";
-		const page = +pageStr > 0 ? +pageStr : 1;
+		const pageParam = c.req.query("page") ?? "1";
+		const page = +pageParam > 0 ? +pageParam : 1;
 
-		const limitStr = c.req.query("limit") ?? "25";
-		const limit = +limitStr > 0 ? +limitStr : 25;
+		const limitParam = c.req.query("limit") ?? "25";
+		const limit = +limitParam > 0 ? +limitParam : 25;
 
-		const statusStr = c.req.query("status") ?? "";
-		const status = Object.keys(TASK_STATUS).includes(statusStr) ? statusStr : "";
+		const statusParam = c.req.query("status") ?? "";
+		const status = Object.keys(TASK_STATUS).includes(statusParam) ? statusParam : "";
 
 		const prepareQueryList = status !== ""
 			? c.env.DB

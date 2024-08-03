@@ -6,12 +6,12 @@ export async function showTask (c: Context<{ Bindings: WorkerBindings, Variables
 		const user = c.get("user");
 		const taskId = c.req.param("id");
 
-		const task = await c.env.DB
+		const queryTask = await c.env.DB
 			.prepare("SELECT * FROM Tasks WHERE id = ? AND userId = ?")
 			.bind(taskId, user.id)
 			.first();
 
-		if (task === null) {
+		if (queryTask === null) {
 			return c.json<ApiResponse>({
 				status: "NOT_FOUND",
 				message: "Task not found"
@@ -21,7 +21,7 @@ export async function showTask (c: Context<{ Bindings: WorkerBindings, Variables
 		return c.json<ApiResponse>({
 			status: "OK",
 			message: "Task fetched successfully",
-			data: task
+			data: queryTask
 		});
 	} catch (error: any) {
 		return c.json<ApiResponse>({
