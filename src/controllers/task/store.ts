@@ -2,7 +2,7 @@ import { Context } from "hono";
 import { z } from "zod";
 import { v4 as uuid } from "uuid";
 import { ApiResponse, AuthVariables, WorkerBindings } from "@/types";
-import { parseBody } from "@utils/request";
+import { parseBody } from "@lib/request";
 import { dateToTimestamp } from "@utils/date";
 import { TASK_STATUS } from "@/constants";
 

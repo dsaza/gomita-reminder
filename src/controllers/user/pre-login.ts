@@ -5,7 +5,7 @@ import { z } from "zod";
 import { compare } from "bcryptjs";
 import { Resend } from "resend";
 import { ApiResponse, WorkerBindings } from "@/types";
-import { parseBody } from "@utils/request";
+import { parseBody } from "@lib/request";
 import { generateOTP } from "@utils/otp";
 
 export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {

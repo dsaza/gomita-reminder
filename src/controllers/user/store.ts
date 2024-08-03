@@ -3,7 +3,7 @@ import { z } from "zod";
 import { genSalt, hash } from "bcryptjs";
 import { v4 as uuid } from "uuid";
 import { ApiResponse, WorkerBindings } from "@/types";
-import { parseBody } from "@utils/request";
+import { parseBody } from "@lib/request";
 import { dateToTimestamp } from "@utils/date";
 
 export async function storeUser (c: Context<{ Bindings: WorkerBindings }>) {
