@@ -29,17 +29,17 @@ export async function storeUser (c: Context<{ Bindings: WorkerBindings }>) {
 			telegramChatId: z.string().trim().regex(/^\d+$/),
 		});
 
-		const user = userSchema.parse(body);
+		const userBody = userSchema.parse(body);
 
 		const pinSaltRounds = 10;
 		const pinSalt = await genSalt(pinSaltRounds);
-		const pinHash = await hash(user.pin, pinSalt);
+		const pinHash = await hash(userBody.pin, pinSalt);
 
 		const userId = uuid();
 
 		await c.env.DB
 			.prepare("INSERT INTO Users (id, name, lastname, nickname, pin, birthdate, phone, email, avatar, telegramChatId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-			.bind(userId, user.name, user.lastname, user.nickname, pinHash, dateToTimestamp(user.birthdate), user.phone, user.email, user.avatar ?? null, user.telegramChatId)
+			.bind(userId, userBody.name, userBody.lastname, userBody.nickname, pinHash, dateToTimestamp(userBody.birthdate), userBody.phone, userBody.email, userBody.avatar ?? null, userBody.telegramChatId)
 			.run();
 
 		return c.json<ApiResponse>({

@@ -26,21 +26,21 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 			tokenAccount: z.string().trim().optional()
 		});
 
-		const user = userSchema.parse(body);
+		const userBody = userSchema.parse(body);
 
-		const query = await c.env.DB
+		const queryLogin = await c.env.DB
 			.prepare("SELECT * FROM Users WHERE phone = ?")
-			.bind(user.phone)
+			.bind(userBody.phone)
 			.first<IUser>()
 
-		if (query === null) {
+		if (queryLogin === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_CREDENTIALS",
 				message: "Invalid credentials"
 			}, 400);
 		}
 
-		const pinMatch = await compare(user.pin, query.pin);
+		const pinMatch = await compare(userBody.pin, queryLogin.pin);
 
 		if (!pinMatch) {
 			return c.json<ApiResponse>({
@@ -50,11 +50,11 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		}
 
 
-		if (user.tokenAccount !== undefined) {
+		if (userBody.tokenAccount !== undefined) {
 			let jwtPayload: null | JWTPayload = null;
 
 			try {
-				const jwtAccountPayload = await verify(user.tokenAccount, c.env.JWT_ACCOUNT_SECRET);
+				const jwtAccountPayload = await verify(userBody.tokenAccount, c.env.JWT_ACCOUNT_SECRET);
 				jwtPayload = jwtAccountPayload;
 			} catch (error) {
 				jwtPayload = null;
@@ -62,7 +62,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 
 			if (jwtPayload !== null) {
 				const userData = await getUserLoginData(c.env, {
-					user: query,
+					user: queryLogin,
 					type: "pre-login"
 				});
 
@@ -75,9 +75,9 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 
 		const { error } = await resend.emails.send({
 			from: "Gomita <onboarding@resend.dev>",
-			to: [query.email],
+			to: [queryLogin.email],
 			subject: "Tú codigo para iniciar sesión",
-			html: `<p>Hola ${query.nickname}!, el código para válidar tu cuenta es: ${otpCode}</p>`
+			html: `<p>Hola ${queryLogin.nickname}!, el código para válidar tu cuenta es: ${otpCode}</p>`
 		});
 
 		if (error !== null) {
@@ -91,15 +91,15 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 
 		await c.env.DB
 			.prepare("UPDATE Users SET otpCode = ?, otpExpiration = ? WHERE id = ?")
-			.bind(otpCode, otpExpiration, query.id)
+			.bind(otpCode, otpExpiration, queryLogin.id)
 			.run();
 
 		return c.json<ApiResponse>({
 			status: "OK_SENT",
 			message: "User OTP sent successfully",
 			data: {
-				id: query.id,
-				email: query.email,
+				id: queryLogin.id,
+				email: queryLogin.email,
 				otpExpiration: otpExpiration
 			}
 		});

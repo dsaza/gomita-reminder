@@ -22,14 +22,14 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 			otpCode: z.string().trim().length(6).regex(/^\d+$/)
 		});
 
-		const login = loginSchema.parse(body);
+		const loginBody = loginSchema.parse(body);
 
-		const query = await c.env.DB
+		const queryLogin = await c.env.DB
 			.prepare("SELECT * FROM Users WHERE id = ? AND email = ? AND otpCode = ?")
-			.bind(login.id, login.email, login.otpCode)
+			.bind(loginBody.id, loginBody.email, loginBody.otpCode)
 			.first<IUser>()
 
-		if (query === null) {
+		if (queryLogin === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_CREDENTIALS",
 				message: "Invalid credentials"
@@ -37,7 +37,7 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		}
 
 		const now = Date.now();
-		const otpExpiration = query.otpExpiration;
+		const otpExpiration = queryLogin.otpExpiration;
 
 		if (otpExpiration !== null && now > otpExpiration) {
 			return c.json<ApiResponse>({
@@ -47,7 +47,7 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		}
 
 		const userData = await getUserLoginData(c.env, {
-			user: query,
+			user: queryLogin,
 			type: "login",
 			now: now
 		});
