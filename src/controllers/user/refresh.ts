@@ -12,7 +12,7 @@ export async function refreshToken (c: Context<{ Bindings: WorkerBindings }>) {
 		if (body === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_BODY",
-				message: "No body provided"
+				message: "El cuerpo de la petición es inválido"
 			}, 400);
 		}
 
@@ -26,7 +26,7 @@ export async function refreshToken (c: Context<{ Bindings: WorkerBindings }>) {
 		if (token === undefined || typeof token !== "string") {
 			return c.json<ApiResponse>({
 				status: "INVALID_TOKEN",
-				message: "Invalid token"
+				message: "El token es inválido"
 			}, 401);
 		}
 
@@ -40,7 +40,7 @@ export async function refreshToken (c: Context<{ Bindings: WorkerBindings }>) {
 
 		return c.json<ApiResponse>({
 			status: "OK",
-			message: "Token refreshed successfully",
+			message: "Token actualizado correctamente",
 			data: {
 				token: {
 					value: newToken,
@@ -60,13 +60,13 @@ export async function refreshToken (c: Context<{ Bindings: WorkerBindings }>) {
 		if (isJwtError(error)) {
 			return c.json<ApiResponse>({
 				status: "INVALID_TOKEN",
-				message: "Invalid token"
+				message: "El token es inválido"
 			}, 401);
 		}
 
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

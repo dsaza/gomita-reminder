@@ -8,7 +8,7 @@ const app = new Hono();
 app.get("/", (c) => {
 	return c.json<ApiResponse>({
 		status: "OK",
-		message: "Welcome to the API"
+		message: "Bienvenido a la API de Gomita"
 	});
 });
 
@@ -18,7 +18,7 @@ app.route("/", taskRoute);
 app.notFound((c) => {
 	return c.json<ApiResponse>({
 		status: "NOT_FOUND",
-		message: "Not found"
+		message: "El recurso solicitado no existe"
 	}, 404);
 });
 

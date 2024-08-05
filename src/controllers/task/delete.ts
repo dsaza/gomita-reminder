@@ -14,18 +14,18 @@ export async function deleteTask (c: Context<{ Bindings: WorkerBindings, Variabl
 		if (queryDelete.meta.changes === 0) {
 			return c.json<ApiResponse>({
 				status: "NOT_FOUND",
-				message: "Task not found"
+				message: "La tarea no existe"
 			}, 404);
 		}
 
 		return c.json<ApiResponse>({
 			status: "OK",
-			message: "Task deleted successfully"
+			message: "Tarea eliminada correctamente"
 		});
 	} catch (error: any) {
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

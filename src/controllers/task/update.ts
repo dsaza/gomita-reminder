@@ -14,7 +14,7 @@ export async function updateTask (c: Context<{ Bindings: WorkerBindings, Variabl
 		if (body === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_BODY",
-				message: "No body provided"
+				message: "El cuerpo de la petición es inválido"
 			}, 400);
 		}
 
@@ -34,13 +34,13 @@ export async function updateTask (c: Context<{ Bindings: WorkerBindings, Variabl
 		if (queryUpdate.meta.changes === 0) {
 			return c.json<ApiResponse>({
 				status: "NOT_FOUND",
-				message: "Task not found"
+				message: "La tarea no existe"
 			}, 404);
 		}
 
 		return c.json<ApiResponse>({
 			status: "OK",
-			message: "Task updated successfully"
+			message: "Tarea actualizada correctamente"
 		});
 	} catch (error: any) {
 		if (error instanceof z.ZodError) {
@@ -53,7 +53,7 @@ export async function updateTask (c: Context<{ Bindings: WorkerBindings, Variabl
 
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

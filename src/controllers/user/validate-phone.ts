@@ -13,18 +13,18 @@ export async function validatePhone (c: Context<{ Bindings: WorkerBindings }>) {
 		if (queryValidate === null) {
 			return c.json<ApiResponse>({
 				status: "NOT_FOUND",
-				message: "Phone number not found"
+				message: "El número de celular no está registrado"
 			}, 404);
 		}
 
 		return c.json<ApiResponse>({
 			status: "OK",
-			message: "Phone number found"
+			message: "Número de celular validado"
 		}, 200);
 	} catch (error: any) {
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

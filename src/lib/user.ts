@@ -30,7 +30,7 @@ export async function getUserLoginData (
 
 	return {
 		status: type === "pre-login" ? "OK_VALID" : "OK",
-		message: "User logged in successfully",
+		message: "Inicio de sesión correcto",
 		data: {
 			user: {
 				id: user.id,

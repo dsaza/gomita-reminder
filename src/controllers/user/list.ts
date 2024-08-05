@@ -9,13 +9,13 @@ export async function listUsers (c: Context<{ Bindings: WorkerBindings }>) {
 
 		return c.json<ApiResponse>({
 			status: "OK",
-			message: "Showing users",
+			message: "Lista de usuarios",
 			data: queryList.results
 		});
 	} catch (error: any) {
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

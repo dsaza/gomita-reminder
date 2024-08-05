@@ -16,7 +16,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		if (body === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_BODY",
-				message: "No body provided"
+				message: "El cuerpo de la petición es inválido"
 			}, 400);
 		}
 
@@ -36,7 +36,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		if (queryLogin === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_CREDENTIALS",
-				message: "Invalid credentials"
+				message: "Credenciales inválidas"
 			}, 400);
 		}
 
@@ -45,7 +45,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		if (!pinMatch) {
 			return c.json<ApiResponse>({
 				status: "INVALID_CREDENTIALS",
-				message: "Invalid credentials"
+				message: "Credenciales inválidas"
 			}, 400);
 		}
 
@@ -83,7 +83,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		if (error !== null) {
 			return c.json<ApiResponse>({
 				status: "INTERNAL_ERROR",
-				message: "Internal server error"
+				message: "Ha ocurrido un error interno"
 			}, 500);
 		}
 
@@ -96,7 +96,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 
 		return c.json<ApiResponse>({
 			status: "OK_SENT",
-			message: "User OTP sent successfully",
+			message: "Código de verificación enviado",
 			data: {
 				id: queryLogin.id,
 				email: queryLogin.email,
@@ -114,7 +114,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

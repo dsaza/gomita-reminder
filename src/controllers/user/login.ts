@@ -12,7 +12,7 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		if (body === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_BODY",
-				message: "No body provided"
+				message: "El cuerpo de la petición es inválido"
 			}, 400);
 		}
 
@@ -32,7 +32,7 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		if (queryLogin === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_CREDENTIALS",
-				message: "Invalid credentials"
+				message: "Credenciales inválidas"
 			}, 400);
 		}
 
@@ -41,8 +41,8 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 
 		if (otpExpiration !== null && now > otpExpiration) {
 			return c.json<ApiResponse>({
-				status: "INVALID_CREDENTIALS",
-				message: "Invalid credentials"
+				status: "EXPIRED_OTP",
+				message: "El código de verificación ha expirado"
 			}, 400);
 		}
 
@@ -64,7 +64,7 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

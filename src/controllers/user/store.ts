@@ -13,7 +13,7 @@ export async function storeUser (c: Context<{ Bindings: WorkerBindings }>) {
 		if (body === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_BODY",
-				message: "No body provided"
+				message: "El cuerpo de la petición es inválido"
 			}, 400);
 		}
 
@@ -44,7 +44,7 @@ export async function storeUser (c: Context<{ Bindings: WorkerBindings }>) {
 
 		return c.json<ApiResponse>({
 			status: "OK",
-			message: "User registered successfully"
+			message: "Usuario creado correctamente",
 		})
 	} catch (error: any) {
 		if (error instanceof z.ZodError) {
@@ -59,21 +59,21 @@ export async function storeUser (c: Context<{ Bindings: WorkerBindings }>) {
 			if (error.message === "D1_ERROR: UNIQUE constraint failed: Users.email") {
 				return c.json<ApiResponse>({
 					status: "DUPLICATE_EMAIL",
-					message: "Email already exists"
+					message: "El correo electrónico ya se encuentra registrado"
 				}, 400);
 			}
 
 			if (error.message === "D1_ERROR: UNIQUE constraint failed: Users.phone") {
 				return c.json<ApiResponse>({
 					status: "DUPLICATE_PHONE",
-					message: "Phone already exists"
+					message: "El número de celular ya se encuentra registrado"
 				}, 400);
 			}
 		}
 
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

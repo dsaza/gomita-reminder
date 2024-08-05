@@ -14,19 +14,19 @@ export async function showTask (c: Context<{ Bindings: WorkerBindings, Variables
 		if (queryTask === null) {
 			return c.json<ApiResponse>({
 				status: "NOT_FOUND",
-				message: "Task not found"
+				message: "La tarea no existe"
 			}, 404);
 		}
 
 		return c.json<ApiResponse>({
 			status: "OK",
-			message: "Task fetched successfully",
+			message: "Tarea encontrada",
 			data: queryTask
 		});
 	} catch (error: any) {
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

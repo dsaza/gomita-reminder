@@ -14,7 +14,7 @@ export async function storeTask (c: Context<{ Bindings: WorkerBindings, Variable
 		if (body === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_BODY",
-				message: "No body provided"
+				message: "El cuerpo de la petición es inválido"
 			}, 400);
 		}
 
@@ -35,7 +35,7 @@ export async function storeTask (c: Context<{ Bindings: WorkerBindings, Variable
 
 		return c.json<ApiResponse>({
 			status: "OK",
-			message: "Task created successfully",
+			message: "Tarea creada correctamente",
 			data: {
 				id: taskId
 			}
@@ -51,7 +51,7 @@ export async function storeTask (c: Context<{ Bindings: WorkerBindings, Variable
 
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

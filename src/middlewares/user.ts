@@ -8,16 +8,16 @@ export async function userRootPrivilege (c: Context<{ Bindings: WorkerBindings }
 
 		if (registerKey !== c.env.ROOT_KEY) {
 			return c.json<ApiResponse>({
-				status: "NOT_FOUND",
-				message: "Not found"
-			}, 404);
+				status: "UNAUTHORIZED",
+				message: "No estás autorizado para acceder a este recurso"
+			}, 401);
 		}
 
 		await next();
 	} catch (error: any) {
 		return c.json<ApiResponse>({
 			status: "INTERNAL_SERVER_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }

@@ -40,7 +40,7 @@ export async function listTasks (c: Context<{ Bindings: WorkerBindings, Variable
 
 		return c.json<ApiResponse>({
 			status: "OK",
-			message: "Tasks fetched successfully",
+			message: "Lista de tareas",
 			data: {
 				tasks: tasks.map(task => ({
 					id: task.id,
@@ -60,7 +60,7 @@ export async function listTasks (c: Context<{ Bindings: WorkerBindings, Variable
 	} catch (error: any) {
 		return c.json<ApiResponse>({
 			status: "INTERNAL_ERROR",
-			message: "Internal server error"
+			message: "Ha ocurrido un error interno"
 		}, 500);
 	}
 }
