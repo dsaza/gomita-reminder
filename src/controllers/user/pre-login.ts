@@ -45,7 +45,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		if (!pinMatch) {
 			return c.json<ApiResponse>({
 				status: "INVALID_CREDENTIALS",
-				message: "Credenciales inválidas"
+				message: "El PIN es incorrecto"
 			}, 400);
 		}
 
