@@ -19,7 +19,7 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		const loginSchema = z.object({
 			id: z.string().trim().max(100).uuid(),
 			email: z.string().trim().email(),
-			otpCode: z.string().trim().length(6).regex(/^\d+$/)
+			otpCode: z.string().trim().length(4).regex(/^\d+$/)
 		});
 
 		const loginBody = loginSchema.parse(body);
