@@ -17,7 +17,7 @@ export async function getUserLoginData (
 	refreshToken = await sign({
 		id: user.id,
 		email: user.email,
-		exp: Math.floor(now / 1000) + (60 * 60 * 24 * 30) // 30 days
+		exp: Math.floor(now / 1000) + (60 * 60 * 24 * 7) // 7 days
 	}, env.JWT_REFRESH_SECRET);
 
 	if (type === "login") {
