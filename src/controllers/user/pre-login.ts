@@ -70,7 +70,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 			}
 		}
 
-		const otpCode = generateOTP();
+		const otpCode = generateOTP(4);
 		const resend = new Resend(c.env.RESEND_KEY);
 
 		const { error } = await resend.emails.send({
