@@ -32,7 +32,7 @@ export async function loginUser (c: Context<{ Bindings: WorkerBindings }>) {
 		if (queryLogin === null) {
 			return c.json<ApiResponse>({
 				status: "INVALID_CREDENTIALS",
-				message: "Credenciales inválidas"
+				message: "El código de verificación es incorrecto"
 			}, 400);
 		}
 
