@@ -49,7 +49,6 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 			}, 400);
 		}
 
-
 		if (userBody.tokenAccount !== undefined) {
 			const token = userBody.tokenAccount.split("Bearer ")[1];
 			let jwtPayload: null | JWTPayload = null;
@@ -61,7 +60,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 				jwtPayload = null;
 			}
 
-			if (jwtPayload !== null) {
+			if (jwtPayload !== null && jwtPayload.email === queryLogin.email) {
 				const userData = await getUserLoginData(c.env, {
 					user: queryLogin,
 					type: "pre-login"
