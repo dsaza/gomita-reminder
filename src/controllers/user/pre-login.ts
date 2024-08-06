@@ -60,7 +60,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 				jwtPayload = null;
 			}
 
-			if (jwtPayload !== null && jwtPayload.email === queryLogin.email) {
+			if (jwtPayload !== null && jwtPayload.id === queryLogin.id) {
 				const userData = await getUserLoginData(c.env, {
 					user: queryLogin,
 					type: "pre-login"
