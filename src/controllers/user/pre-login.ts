@@ -51,10 +51,11 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 
 
 		if (userBody.tokenAccount !== undefined) {
+			const token = userBody.tokenAccount.split("Bearer ")[1];
 			let jwtPayload: null | JWTPayload = null;
 
 			try {
-				const jwtAccountPayload = await verify(userBody.tokenAccount, c.env.JWT_ACCOUNT_SECRET);
+				const jwtAccountPayload = await verify(token, c.env.JWT_ACCOUNT_SECRET);
 				jwtPayload = jwtAccountPayload;
 			} catch (error) {
 				jwtPayload = null;
