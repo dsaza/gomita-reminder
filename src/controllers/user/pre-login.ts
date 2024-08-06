@@ -87,7 +87,7 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 			}, 500);
 		}
 
-		const otpExpiration = Date.now() + (5 * 60 * 1000); // 5 minutes
+		const otpExpiration = Date.now() + (2 * 60 * 1000); // 2 minutes
 
 		await c.env.DB
 			.prepare("UPDATE Users SET otpCode = ?, otpExpiration = ? WHERE id = ?")
