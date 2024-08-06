@@ -7,6 +7,7 @@ compatibility_flags = ["nodejs_compat"]
 [vars]
 ROOT_KEY = "your-root-key"
 RESEND_KEY = "your-resend-api-key"
+RESEND_EMAIL = "your-owner-email-in-resend"
 JWT_SECRET = "your-jwt-secret"
 JWT_REFRESH_SECRET = "your-jwt-refresh"
 JWT_ACCOUNT_SECRET = "your-jwt-account"

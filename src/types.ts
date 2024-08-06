@@ -2,6 +2,7 @@ export type WorkerBindings = {
 	DB: D1Database;
 	ROOT_KEY: string;
 	RESEND_KEY: string;
+	RESEND_EMAIL: string;
 	JWT_SECRET: string;
 	JWT_REFRESH_SECRET: string;
 	JWT_ACCOUNT_SECRET: string;

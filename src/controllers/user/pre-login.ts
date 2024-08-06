@@ -75,7 +75,8 @@ export async function preLoginUser (c: Context<{ Bindings: WorkerBindings }>) {
 
 		const { error } = await resend.emails.send({
 			from: "Gomita <onboarding@resend.dev>",
-			to: [queryLogin.email],
+			to: c.env.RESEND_EMAIL,
+			cc: [queryLogin.email],
 			subject: "Tú codigo para iniciar sesión",
 			html: `<p>Hola ${queryLogin.nickname}!, el código para válidar tu cuenta es: ${otpCode}</p>`
 		});
